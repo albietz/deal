@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Hello World, Home!</string>
+    <string name="hello">Bienvenue, scannez vos courses et obtenez rapidement votre budget et des offres pour vos prochains achats</string>
     <string name="app_name">Deal</string>
+    <string name="add">Ajouter des courses</string>
+    <string name="show">Tous mes achats</string>
 
 </resources>
