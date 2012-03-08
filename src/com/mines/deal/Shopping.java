@@ -32,6 +32,7 @@ public class Shopping extends SQLiteOpenHelper {
 	public static class Cart {
 		public ArrayList<Item> items;
 		public Date date;
+		public int id;
 
 		public float getTotal() {
 			float total = 0;

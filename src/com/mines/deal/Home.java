@@ -1,6 +1,9 @@
 package com.mines.deal;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import org.json.JSONException;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -12,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mines.deal.Shopping.Cart;
@@ -28,6 +32,20 @@ public class Home extends ListActivity {
 
 		Shopping.Cart mCaddie = new Shopping.Cart();
 		mAdapter.add(mCaddie);
+		mAdapter.add(mCaddie);
+
+		ReadPromoJson rpj;
+		try {
+			rpj = new ReadPromoJson(getResources());
+			rpj.getRayons();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
 	}
 
 	@Override
@@ -39,6 +57,15 @@ public class Home extends ListActivity {
 	}
 
 	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		Intent intent = new Intent(getApplicationContext(),
+				CaddieActivity.class);
+		intent.putExtra("action", 2);
+		intent.putExtra("id", id);
+		startActivity(intent);
+	}
+
+	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		Intent intent;
 		switch (item.getItemId()) {
@@ -47,8 +74,9 @@ public class Home extends ListActivity {
 			intent.putExtra("action", 1);
 			startActivity(intent);
 			break;
-		case (R.id.menu_history):
-			intent = new Intent(getApplicationContext(), HistoryActivity.class);
+		case (R.id.menu_statistics):
+			intent = new Intent(getApplicationContext(),
+					StatisticsActivity.class);
 			startActivity(intent);
 			break;
 		}
@@ -82,23 +110,23 @@ public class Home extends ListActivity {
 
 		@Override
 		public long getItemId(int position) {
-			return position;
+			return ((Shopping.Cart) getItem(position)).id;
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			
+
 			convertView = mInflater.inflate(R.layout.shopping_cart, null);
 			Shopping.Cart mCart = (Shopping.Cart) getItem(position);
 
 			TextView date = (TextView) convertView.findViewById(R.id.date);
-			date.setText(mCart.date.toString());
+			date.setText(mCart.date.toLocaleString());
 			TextView price = (TextView) convertView.findViewById(R.id.price);
 			price.setText(String.valueOf(mCart.getTotal()) + "Û");
 			TextView quantity = (TextView) convertView
 					.findViewById(R.id.quantity);
 			quantity.setText(String.valueOf(mCart.getQuantity()) + " achats");
-			
+
 			return convertView;
 		}
 

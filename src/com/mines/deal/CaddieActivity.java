@@ -16,6 +16,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
+import com.mines.deal.Shopping.Cart;
 import com.mines.deal.Shopping.Item;
 
 import android.app.ListActivity;
@@ -48,11 +49,13 @@ public class CaddieActivity extends ListActivity {
 
 		switch (getIntent().getIntExtra("action", 0)) {
 		case 2:
-
+//			int cartId = getIntent().getIntExtra("id",0);
+//			Shopping myShopping = new Shopping();
+//			Cart myCart = myShopping.getCart(cartId);
+//			mAdapter.setItems(myCart.items);
 			break;
 		case 1:
 			Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			// String path = getCacheDir().getAbsolutePath() + "/liste";
 			File picture = new File(Environment.getExternalStorageDirectory(),
 					"image.tmp");
 			Uri outputUri = Uri.fromFile(picture);
@@ -67,7 +70,6 @@ public class CaddieActivity extends ListActivity {
 	protected void onActivityResult(int requestCode, int resultCode,
 			Intent intent) {
 		if (requestCode == 100) {
-			// Bitmap mImageBitmap = (Bitmap) intent.getExtras().get("data");
 			Bitmap mImageBitmap = (Bitmap) BitmapFactory.decodeFile(Environment
 					.getExternalStorageDirectory() + "/image.tmp");
 

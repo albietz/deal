@@ -7,8 +7,8 @@
         android:title="Add Cart"/>
 
     <item
-        android:id="@+id/menu_history"
+        android:id="@+id/menu_statistics"
         android:showAsAction="ifRoom"
-        android:title="History"/>
+        android:title="Statistics"/>
 
 </menu>
