@@ -64,6 +64,12 @@ public class Home extends ListActivity {
 //		Log.e("Home", "onCreate");
 	}
 
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		CartCursorAdapter adapter = (CartCursorAdapter)getListAdapter();
+		adapter.changeCursor(shop.getReadableDatabase().query("cart",
+				new String[] { "_id", "date" }, null, null, null, null, null));
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
