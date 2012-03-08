@@ -41,17 +41,17 @@ public class Home extends ListActivity {
 
 		mAdapter.add(mCaddie);
 
-//		ReadPromoJson rpj;
-//		try {
-//			rpj = new ReadPromoJson(getResources());
-//			rpj.getRayons();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (JSONException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		ReadPromoJson rpj;
+		try {
+			rpj = new ReadPromoJson(getResources());
+			rpj.getRayons();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 //		shop = new Shopping(this, "shopping", null, 1);
 //
