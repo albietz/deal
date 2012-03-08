@@ -27,6 +27,7 @@ public class Camembert extends View {
 		mPaint = new Paint();
 		mPaint.setARGB(255, 12, 50, 72);
 		currentColor = mPaint.getColor();
+		pourcentages = new ArrayList<Float>();
 		// TODO Auto-generated constructor stub
 	}
 
@@ -54,7 +55,7 @@ public class Camembert extends View {
 			myPaint.setColor(currentColor + 128);
 			canvas.drawArc(mBigOval, cumul, pourcentage * 3.6f, true, myPaint);
 			cumul += pourcentage * 3.6f;
-			currentColor += 256*(23+4*256+150*256*256);
+			currentColor += 256 * (23 + 4 * 256 + 150 * 256 * 256);
 		}
 	}
 

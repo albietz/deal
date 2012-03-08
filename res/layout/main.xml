@@ -5,10 +5,10 @@
     android:orientation="vertical" >
 
     <TextView
+        android:id="@+id/welcome"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
+        android:padding="10dp"
         android:text="@string/hello" />
 
     <LinearLayout
@@ -16,24 +16,10 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
-        <Button
-            android:id="@+id/button_addlist"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:text="@string/add" />
-
-        <Button
-            android:id="@+id/button_history"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:text="@string/show" />
-
     </LinearLayout>
 
     <ListView
-        android:id="@+id/list"
+        android:id="@android:id/list"
         android:layout_width="fill_parent"
         android:layout_height="100dp" >
     </ListView>
