@@ -62,6 +62,32 @@ public class Shopping extends SQLiteOpenHelper {
 		}
 	}
 
+	public static class Rayon {
+		public int id;
+		public String nom;
+
+		public Rayon(int id, String nom) {
+			this.id = id;
+			this.nom = nom;
+		}
+	}
+
+	public static class Promo {
+		public int id;
+		public String nom;
+		public int rayonId;
+		public double prix;
+		public double prixBarre;
+		public double cagnotte;
+		public Date dateDebut;
+		public Date dateFin;
+
+		public Promo(int id, String nom) {
+			this.id = id;
+			this.nom = nom;
+		}
+	}
+
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		// TODO Auto-generated method stub
