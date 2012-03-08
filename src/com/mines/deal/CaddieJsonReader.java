@@ -8,29 +8,29 @@ import java.util.List;
 import android.util.JsonReader;
 
 public class CaddieJsonReader {
-	public List<Shopping.Item> readJsonStream(String s) throws IOException {
+	public List<Shopping.Achat> readJsonStream(String s) throws IOException {
 		StringReader sr = new StringReader(s);
 		JsonReader reader = new JsonReader(sr);
 		try {
-			return readItemsArray(reader);
+			return readAchatsArray(reader);
 		} finally {
 			reader.close();
 		}
 	}
 
-	public List<Shopping.Item> readItemsArray(JsonReader reader)
+	public List<Shopping.Achat> readAchatsArray(JsonReader reader)
 			throws IOException {
-		List<Shopping.Item> items = new ArrayList<Shopping.Item>();
+		List<Shopping.Achat> achats = new ArrayList<Shopping.Achat>();
 
 		reader.beginArray();
 		while (reader.hasNext()) {
-			items.add(readMessage(reader));
+			achats.add(readMessage(reader));
 		}
 		reader.endArray();
-		return items;
+		return achats;
 	}
 
-	public Shopping.Item readMessage(JsonReader reader) throws IOException {
+	public Shopping.Achat readMessage(JsonReader reader) throws IOException {
 		String name = null;
 		float price = 0;
 		int quantity = 0;
@@ -49,7 +49,7 @@ public class CaddieJsonReader {
 			}
 		}
 		reader.endObject();
-		return new Shopping.Item(quantity, price, name);
+		return new Shopping.Achat(quantity, price, name);
 	}
 
 }

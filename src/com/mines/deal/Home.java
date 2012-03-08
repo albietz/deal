@@ -6,8 +6,12 @@ import java.util.ArrayList;
 import org.json.JSONException;
 
 import android.app.ListActivity;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +25,8 @@ import android.widget.TextView;
 import com.mines.deal.Shopping.Cart;
 
 public class Home extends ListActivity {
+	Shopping shop;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -32,20 +38,30 @@ public class Home extends ListActivity {
 
 		Shopping.Cart mCaddie = new Shopping.Cart();
 		mAdapter.add(mCaddie);
+
 		mAdapter.add(mCaddie);
 
-		ReadPromoJson rpj;
-		try {
-			rpj = new ReadPromoJson(getResources());
-			rpj.getRayons();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	
+//		ReadPromoJson rpj;
+//		try {
+//			rpj = new ReadPromoJson(getResources());
+//			rpj.getRayons();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (JSONException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+
+//		shop = new Shopping(this, "shopping", null, 1);
+//
+//		SQLiteDatabase db = shop.getWritableDatabase();
+//		db.delete("item", null, null);
+//		ContentValues values = new ContentValues();
+//		values.put("name", "EAU CRISTALINE");
+//		db.insert("item", null, values);
+//		db.close();
+//		Log.e("Home", "onCreate");
 	}
 
 	@Override
