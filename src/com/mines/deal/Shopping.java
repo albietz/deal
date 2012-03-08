@@ -16,11 +16,11 @@ public class Shopping extends SQLiteOpenHelper {
 		// TODO Auto-generated constructor stub
 	}
 
-	public static class Item {
+	public static class Achat {
 		public int quantity;
 		public float price;
 
-		public Item(int quantity, float price, String name) {
+		public Achat(int quantity, float price, String name) {
 			this.quantity = quantity;
 			this.price = price;
 			this.name = name;
@@ -30,28 +30,28 @@ public class Shopping extends SQLiteOpenHelper {
 	}
 
 	public static class Cart {
-		public ArrayList<Item> items;
+		public ArrayList<Achat> achats;
 		public Date date;
 
 		public float getTotal() {
 			float total = 0;
-			for (Item item : items) {
-				total += item.quantity * item.price;
+			for (Achat achat : achats) {
+				total += achat.quantity * achat.price;
 			}
 			return total;
 		}
 
 		public int getQuantity() {
 			int total = 0;
-			for (Item item : items) {
-				total += item.quantity;
+			for (Achat achat : achats) {
+				total += achat.quantity;
 			}
 			return total;
 		}
 
 		public Cart(Date date) {
 			this.date = date;
-			this.items = new ArrayList<Item>();
+			this.achats = new ArrayList<Achat>();
 		}
 
 		public Cart() {

@@ -16,7 +16,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
-import com.mines.deal.Shopping.Item;
+import com.mines.deal.Shopping.Achat;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -114,8 +114,8 @@ public class CaddieActivity extends ListActivity {
 		protected void onPostExecute(String result) {
 			try {
 				CaddieJsonReader myJsonReader = new CaddieJsonReader();
-				List<Shopping.Item> items = myJsonReader.readJsonStream(result);
-				mAdapter.setItems(items);
+				List<Shopping.Achat> achats = myJsonReader.readJsonStream(result);
+				mAdapter.setAchats(achats);
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -129,27 +129,27 @@ public class CaddieActivity extends ListActivity {
 	public class CaddieListAdapter extends BaseAdapter {
 
 		LayoutInflater mInflater;
-		ArrayList<Shopping.Item> mItemList;
+		ArrayList<Shopping.Achat> mAchatList;
 
 		public CaddieListAdapter() {
 			super();
 			mInflater = getLayoutInflater();
-			mItemList = new ArrayList<Shopping.Item>();
+			mAchatList = new ArrayList<Shopping.Achat>();
 		}
 
-		public void setItems(List<Item> items) {
-			mItemList = (ArrayList<Shopping.Item>) items;
+		public void setAchats(List<Achat> achats) {
+			mAchatList = (ArrayList<Shopping.Achat>) achats;
 			notifyDataSetChanged();
 		}
 
 		@Override
 		public int getCount() {
-			return mItemList.size();
+			return mAchatList.size();
 		}
 
 		@Override
 		public Object getItem(int arg0) {
-			return mItemList.get(arg0);
+			return mAchatList.get(arg0);
 		}
 
 		@Override
@@ -160,16 +160,16 @@ public class CaddieActivity extends ListActivity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			convertView = mInflater.inflate(R.layout.shopping_item, null);
-			Shopping.Item mItem = (Shopping.Item) getItem(position);
+			Shopping.Achat mAchat = (Shopping.Achat) getItem(position);
 
 			TextView name = (TextView) convertView.findViewById(R.id.name);
-			name.setText(mItem.name);
+			name.setText(mAchat.name);
 			TextView price = (TextView) convertView.findViewById(R.id.price);
-			price.setText(String.valueOf(mItem.price * mItem.quantity) + "Û");
+			price.setText(String.valueOf(mAchat.price * mAchat.quantity) + "Û");
 			TextView quantity = (TextView) convertView
 					.findViewById(R.id.quantity);
-			quantity.setText(String.valueOf(mItem.quantity) + " x "
-					+ String.valueOf(mItem.price) + "Û");
+			quantity.setText(String.valueOf(mAchat.quantity) + " x "
+					+ String.valueOf(mAchat.price) + "Û");
 
 			return convertView;
 		}
