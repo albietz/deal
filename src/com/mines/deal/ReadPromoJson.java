@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,10 +16,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.res.Resources;
-import android.text.format.DateFormat;
 
-import com.mines.deal.Shopping.Rayon;
 import com.mines.deal.Shopping.Promo;
+import com.mines.deal.Shopping.Rayon;
 
 public class ReadPromoJson {
 

@@ -18,13 +18,9 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
-import com.mines.deal.Shopping.Cart;
-import com.mines.deal.Shopping.Achat;
-
 import android.app.ListActivity;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -45,6 +41,8 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.mines.deal.Shopping.Achat;
+
 public class CaddieActivity extends ListActivity {
 	private CaddieListAdapter mAdapter;
 
@@ -58,10 +56,10 @@ public class CaddieActivity extends ListActivity {
 
 		switch (getIntent().getIntExtra("action", 0)) {
 		case 2:
-//			int cartId = getIntent().getIntExtra("id",0);
-//			Shopping myShopping = new Shopping();
-//			Cart myCart = myShopping.getCart(cartId);
-//			mAdapter.setItems(myCart.items);
+			long cartId = getIntent().getLongExtra("id", 0);
+			Shopping myShopping = new Shopping(this);
+			Shopping.Cart myCart = myShopping.getCart(cartId);
+			mAdapter.setAchats(myCart.achats);
 			break;
 		case 1:
 			Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -94,7 +92,7 @@ public class CaddieActivity extends ListActivity {
 	public void postBitmap(byte[] bm) {
 		String imageString = Base64.encodeToString(bm, Base64.DEFAULT);
 		new uploadImage().execute(imageString);
-		ProgressBar pbar = (ProgressBar)findViewById(R.id.caddieProgressBar);
+		ProgressBar pbar = (ProgressBar) findViewById(R.id.caddieProgressBar);
 		pbar.setVisibility(View.VISIBLE);
 	}
 
@@ -125,40 +123,45 @@ public class CaddieActivity extends ListActivity {
 
 		@Override
 		protected void onPostExecute(String result) {
-			ProgressBar pbar = (ProgressBar)findViewById(R.id.caddieProgressBar);
+			ProgressBar pbar = (ProgressBar) findViewById(R.id.caddieProgressBar);
 			pbar.setVisibility(View.GONE);
 			try {
 				CaddieJsonReader myJsonReader = new CaddieJsonReader();
-				List<Shopping.Achat> achats = myJsonReader.readJsonStream(result);
+				List<Shopping.Achat> achats = myJsonReader
+						.readJsonStream(result);
 				mAdapter.setAchats(achats);
-				Button b = (Button)findViewById(R.id.caddieOK);
+				Button b = (Button) findViewById(R.id.caddieOK);
 				b.setVisibility(View.VISIBLE);
 				b.setOnClickListener(new OnClickListener() {
-					
+
 					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
 						Log.v("click", "click listener");
-						Shopping shop = new Shopping(getApplicationContext(), "shopping", null, 1);
+						Shopping shop = new Shopping(getApplicationContext(),
+								"shopping", null, 1);
 						SQLiteDatabase db = shop.getWritableDatabase();
-						
+
 						ContentValues values = new ContentValues();
-						SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+						SimpleDateFormat format = new SimpleDateFormat(
+								"yyyy-MM-dd HH:mm:ss");
 						values.put("date", format.format(new Date()));
 						long cartid = db.insert("cart", null, values);
-						
+
 						for (Achat a : mAdapter.mAchatList) {
 							long itemid;
 							values = new ContentValues();
-							
-//							Cursor c = db.query("item", new String[] { "_id", "name" }, "name = '?s'", new String[] { a.name }, null, null, null);
-//							if (c.moveToNext()) {
-//								itemid = c.getLong(0);
-//							} else {
-								values.put("name", a.name);
-								itemid = db.insert("item", null, values);
-//							}
-							
+
+							// Cursor c = db.query("item", new String[] { "_id",
+							// "name" }, "name = '?s'", new String[] { a.name },
+							// null, null, null);
+							// if (c.moveToNext()) {
+							// itemid = c.getLong(0);
+							// } else {
+							values.put("name", a.name);
+							itemid = db.insert("item", null, values);
+							// }
+
 							values = new ContentValues();
 							values.put("price", a.price);
 							values.put("quantity", a.quantity);
@@ -168,8 +171,8 @@ public class CaddieActivity extends ListActivity {
 							db.insert("achat", null, values);
 						}
 						db.close();
-						
-						Button b = (Button)v;
+
+						Button b = (Button) v;
 						b.setVisibility(View.GONE);
 					}
 				});

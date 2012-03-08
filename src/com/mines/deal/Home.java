@@ -1,30 +1,24 @@
 package com.mines.deal;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import org.json.JSONException;
 
 import android.app.ListActivity;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteCursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.mines.deal.Shopping.Cart;
 
 public class Home extends ListActivity {
 	Shopping shop;
@@ -77,7 +71,7 @@ public class Home extends ListActivity {
 		Intent intent = new Intent(getApplicationContext(),
 				CaddieActivity.class);
 		intent.putExtra("action", 2);
-		intent.putExtra("id", id);
+		intent.putExtra("id", ((SQLiteCursor) l.getAdapter().getItem(position)).getLong(0));
 		startActivity(intent);
 	}
 

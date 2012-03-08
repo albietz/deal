@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:text="Large Text"
+        android:text="23 €"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
@@ -27,6 +27,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/date"
-        android:text="TextView" />
+        android:text="5 achats" />
 
 </RelativeLayout>

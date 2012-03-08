@@ -10,7 +10,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.text.format.DateFormat;
 
 public class Shopping extends SQLiteOpenHelper {
 
@@ -18,6 +17,10 @@ public class Shopping extends SQLiteOpenHelper {
 			int version) {
 		super(context, name, factory, version);
 		// TODO Auto-generated constructor stub
+	}
+
+	public Shopping(Context context) {
+		this(context, "shopping", null, 1);
 	}
 
 	public static class Achat {
@@ -99,24 +102,29 @@ public class Shopping extends SQLiteOpenHelper {
 
 	}
 
-	public Cart getCart(int id) {
+	public Cart getCart(long id) {
 		SQLiteDatabase db = getReadableDatabase();
-		Cursor c = db.query("cart", new String[] { "date" }, "_id is " + String.valueOf(id), null, null, null, null);
+		Cursor c = db.query("cart", new String[] { "date" },
+				"_id is " + String.valueOf(id), null, null, null, null);
 		c.moveToNext();
 		Cart cart = new Cart();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		try {
 			cart.date = format.parse(c.getString(0));
-		} catch (ParseException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		c = db.query("achat", new String[] { "iditem", "price", "quantity" }, "idcart is " + String.valueOf(id), null, null, null, null);
+		c = db.query("achat", new String[] { "iditem", "price", "quantity" },
+				"idcart is " + String.valueOf(id), null, null, null, null);
 		while (c.moveToNext()) {
-			long iditem = c.getLong(0);
-			Cursor cc = db.query("item", new String[] {"name"}, "_id is " + String.valueOf(iditem), null, null, null, null);
+			int iditem = (int) c.getLong(0);
+			System.out.println(iditem);
+			Cursor cc = db.query("item", new String[] { "name" }, "_id is "
+					+ String.valueOf(iditem), null, null, null, null);
 			cc.moveToNext();
-			cart.achats.add(new Achat(c.getInt(2), c.getFloat(1), cc.getString(0)));
+			cart.achats.add(new Achat(c.getInt(2), c.getFloat(1), cc
+					.getString(0)));
 		}
 		return cart;
 	}
