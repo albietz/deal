@@ -3,7 +3,9 @@ package com.mines.deal;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -20,7 +22,10 @@ import com.mines.deal.Shopping.Cart;
 import com.mines.deal.Shopping.Achat;
 
 import android.app.ListActivity;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
@@ -30,10 +35,14 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class CaddieActivity extends ListActivity {
@@ -85,6 +94,8 @@ public class CaddieActivity extends ListActivity {
 	public void postBitmap(byte[] bm) {
 		String imageString = Base64.encodeToString(bm, Base64.DEFAULT);
 		new uploadImage().execute(imageString);
+		ProgressBar pbar = (ProgressBar)findViewById(R.id.caddieProgressBar);
+		pbar.setVisibility(View.VISIBLE);
 	}
 
 	public class uploadImage extends AsyncTask<String, Void, String> {
@@ -114,10 +125,54 @@ public class CaddieActivity extends ListActivity {
 
 		@Override
 		protected void onPostExecute(String result) {
+			ProgressBar pbar = (ProgressBar)findViewById(R.id.caddieProgressBar);
+			pbar.setVisibility(View.GONE);
 			try {
 				CaddieJsonReader myJsonReader = new CaddieJsonReader();
 				List<Shopping.Achat> achats = myJsonReader.readJsonStream(result);
 				mAdapter.setAchats(achats);
+				Button b = (Button)findViewById(R.id.caddieOK);
+				b.setVisibility(View.VISIBLE);
+				b.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						Log.v("click", "click listener");
+						Shopping shop = new Shopping(getApplicationContext(), "shopping", null, 1);
+						SQLiteDatabase db = shop.getWritableDatabase();
+						
+						ContentValues values = new ContentValues();
+						SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+						values.put("date", format.format(new Date()));
+						long cartid = db.insert("cart", null, values);
+						
+						for (Achat a : mAdapter.mAchatList) {
+							long itemid;
+							values = new ContentValues();
+							
+//							Cursor c = db.query("item", new String[] { "_id", "name" }, "name = '?s'", new String[] { a.name }, null, null, null);
+//							if (c.moveToNext()) {
+//								itemid = c.getLong(0);
+//							} else {
+								values.put("name", a.name);
+								itemid = db.insert("item", null, values);
+//							}
+							
+							values = new ContentValues();
+							values.put("price", a.price);
+							values.put("quantity", a.quantity);
+							values.put("name", a.name);
+							values.put("iditem", itemid);
+							values.put("idcart", cartid);
+							db.insert("achat", null, values);
+						}
+						db.close();
+						
+						Button b = (Button)v;
+						b.setVisibility(View.GONE);
+					}
+				});
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

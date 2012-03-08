@@ -7,6 +7,7 @@ import org.json.JSONException;
 
 import android.app.ListActivity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -33,13 +35,11 @@ public class Home extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		CartAdapter mAdapter = new CartAdapter();
+		shop = new Shopping(this, "shopping", null, 1);
+		Cursor c = shop.getReadableDatabase().query("cart",
+				new String[] { "_id", "date" }, null, null, null, null, null);
+		CartCursorAdapter mAdapter = new CartCursorAdapter(this, c);
 		setListAdapter(mAdapter);
-
-		Shopping.Cart mCaddie = new Shopping.Cart();
-		mAdapter.add(mCaddie);
-
-		mAdapter.add(mCaddie);
 
 		ReadPromoJson rpj;
 		try {
@@ -99,51 +99,27 @@ public class Home extends ListActivity {
 		return true;
 	}
 
-	private class CartAdapter extends BaseAdapter {
-		private ArrayList<Cart> carts;
-		LayoutInflater mInflater;
-
-		public CartAdapter() {
-			super();
+	private class CartCursorAdapter extends CursorAdapter {
+		private LayoutInflater mInflater;
+		
+		public CartCursorAdapter(Context context, Cursor c) {
+			super(context, c);
 			mInflater = getLayoutInflater();
-			carts = new ArrayList<Shopping.Cart>();
 		}
 
 		@Override
-		public int getCount() {
-			return carts.size();
-		}
-
-		public void add(Cart mCaddie) {
-			carts.add(mCaddie);
-			notifyDataSetChanged();
+		public void bindView(View view, Context context, Cursor c) {
+			view = mInflater.inflate(R.layout.shopping_cart, null);
+			TextView tvDate = (TextView)view.findViewById(R.id.date);
+			tvDate.setText(c.getString(1));
 		}
 
 		@Override
-		public Object getItem(int position) {
-			return carts.get(position);
-		}
-
-		@Override
-		public long getItemId(int position) {
-			return ((Shopping.Cart) getItem(position)).id;
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-
-			convertView = mInflater.inflate(R.layout.shopping_cart, null);
-			Shopping.Cart mCart = (Shopping.Cart) getItem(position);
-
-			TextView date = (TextView) convertView.findViewById(R.id.date);
-			date.setText(mCart.date.toLocaleString());
-			TextView price = (TextView) convertView.findViewById(R.id.price);
-			price.setText(String.valueOf(mCart.getTotal()) + "Û");
-			TextView quantity = (TextView) convertView
-					.findViewById(R.id.quantity);
-			quantity.setText(String.valueOf(mCart.getQuantity()) + " achats");
-
-			return convertView;
+		public View newView(Context context, Cursor c, ViewGroup viewGroup) {
+			View view = mInflater.inflate(R.layout.shopping_cart, null);
+			TextView tvDate = (TextView)view.findViewById(R.id.date);
+			tvDate.setText(c.getString(1));
+			return view;
 		}
 
 	}

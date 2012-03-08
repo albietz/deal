@@ -1,5 +1,7 @@
 package com.mines.deal;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -91,9 +93,9 @@ public class Shopping extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		// TODO Auto-generated method stub
-		db.execSQL("CREATE TABLE cart (date INTEGER);");
-		db.execSQL("CREATE TABLE item (name TEXT);");
-		db.execSQL("CREATE TABLE achat (idcart INTEGER, iditem INTEGER, price NUMERIC, quantity INTEGER);");
+		db.execSQL("CREATE TABLE cart (_id INTEGER PRIMARY KEY, date TEXT);");
+		db.execSQL("CREATE TABLE item (_id INTEGER PRIMARY KEY, name TEXT);");
+		db.execSQL("CREATE TABLE achat (_id INTEGER PRIMARY KEY, idcart INTEGER, iditem INTEGER, name TEXT, price NUMERIC, quantity INTEGER);");
 
 	}
 
@@ -102,7 +104,13 @@ public class Shopping extends SQLiteOpenHelper {
 		Cursor c = db.query("cart", new String[] { "date" }, "_id is " + String.valueOf(id), null, null, null, null);
 		c.moveToNext();
 		Cart cart = new Cart();
-		cart.date = new java.sql.Date(c.getLong(0));
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		try {
+			cart.date = format.parse(c.getString(0));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		c = db.query("achat", new String[] { "iditem", "price", "quantity" }, "idcart is " + String.valueOf(id), null, null, null, null);
 		while (c.moveToNext()) {
 			long iditem = c.getLong(0);

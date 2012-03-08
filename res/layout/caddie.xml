@@ -4,10 +4,24 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
+    <ProgressBar
+        android:id="@+id/caddieProgressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
     <ListView
         android:id="@android:id/list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
     </ListView>
+
+    <Button
+        android:id="@+id/caddieOK"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/caddie_ok" android:visibility="gone"/>
 
 </LinearLayout>

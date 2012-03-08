@@ -6,5 +6,6 @@
     <string name="add">Ajouter des courses</string>
     <string name="show">Tous mes achats</string>
     <string name="achats_rayons">Achats par rayon</string>
+    <string name="caddie_ok">Valider</string>
 
 </resources>
