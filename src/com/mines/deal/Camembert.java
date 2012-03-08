@@ -26,7 +26,7 @@ public class Camembert extends View {
 	public Camembert(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mPaint = new Paint();
-		mPaint.setARGB(255, 12, 50, 72);
+		mPaint.setARGB(255, 180, 100, 100);
 		currentColor = mPaint.getColor();
 		pourcentages = new ArrayList<Float>();
 		elements = new ArrayList<String>();
@@ -47,27 +47,41 @@ public class Camembert extends View {
 	}
 
 	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		setMinimumHeight(getWidth());
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+	}
+
+	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		// canvas.drawLine(10,10,100,100, mPaint);
 		RectF mBigOval = new RectF(60, 60, canvas.getWidth() - 60,
 				canvas.getWidth() - 60);
 		float mid = canvas.getWidth() / 2;
-		float radius = ((canvas.getWidth() - 60)) * 0.7f;
+		float radius = ((canvas.getWidth() - 60)) * 0.28f;
 		float cumul = 0;
 		canvas.drawColor(Color.argb(0, 0, 0, 0));
-		float pourcentage;
+		float pourcentage, xText, yText;
 		String element;
+		Paint textPaint = new Paint();
+		textPaint.setTextSize(30);
+		textPaint.setColor(Color.BLACK);
+
 		for (int i = 0; i < pourcentages.size(); i++) {
 			pourcentage = pourcentages.get(i);
 			element = elements.get(i);
-			// xText = mid + radius * Math.cos(cumul);
+			xText = (float) (mid + radius
+					* Math.cos((cumul + pourcentage * 3.6 / 2) / 180 * 3.14));
+			yText = (float) (mid + radius
+					* Math.sin((cumul + pourcentage * 3.6 / 2) / 180 * 3.14));
 			Paint myPaint = new Paint();
 			myPaint.setAntiAlias(true);
-			myPaint.setColor(currentColor + 128);
+			myPaint.setColor(currentColor);
 			canvas.drawArc(mBigOval, cumul, pourcentage * 3.6f, true, myPaint);
+			canvas.drawText(element, xText - 5 * element.length(), yText,
+					textPaint);
 			cumul += pourcentage * 3.6f;
-			currentColor += 256 * (23 + 4 * 256 + 150 * 256 * 256);
+			currentColor += 15 + 14 * 256 + 10 * 256 * 256;
 		}
 	}
 }
